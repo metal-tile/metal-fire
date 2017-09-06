@@ -4,6 +4,7 @@ declare var firebase: any;
 declare var phina: any;
 declare var Label: any;
 declare var GameApp: any;
+declare var Sprite: any;
 
 // phina.js をグローバル領域に展開
 phina.globalize();
@@ -13,13 +14,15 @@ phina.define('MainScene', {
     superClass: 'DisplayScene',
     init: function () {
         this.superInit();
-        // 背景色を指定
-        this.backgroundColor = '#444';
-        // ラベルを生成
-        this.label = Label('Hello, phina.js!').addChildTo(this);
-        this.label.x = this.gridX.center(); // x 座標
-        this.label.y = this.gridY.center(); // y 座標
-        this.label.fill = 'white'; // 塗りつぶし色
+        
+        // マップ
+        this.bg = Sprite("ground").addChildTo(this);
+        this.bg.setPosition(0, 0);
+        this.bg.origin.set(0, 0); // 左上基準に変更
+
+        this.bg1 = Sprite("ground").addChildTo(this);
+        this.bg1.setPosition(MetalTile.GameConfig.CHIP_SIZE * 1, 0);
+        this.bg1.origin.set(0, 0); // 左上基準に変更
     },
 });
 
@@ -29,6 +32,7 @@ phina.main(function () {
         startLabel: 'main', // メインシーンから開始する
         width: MetalTile.GameConfig.SCREEN_WIDTH,
         height: MetalTile.GameConfig.SCREEN_HEIGHT,
+        assets: MetalTile.GameConfig.ASSETS
     });
 
     app.enableStats();
