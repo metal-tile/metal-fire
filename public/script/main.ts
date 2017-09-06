@@ -1,67 +1,104 @@
-declare var firebase : any;
+/// <reference path="config.ts" />
 
-firebase.initializeApp({
-    apiKey: 'AIzaSyBpU_0jiRRwU_cORczIBeMPmOiZtUhct4w',
-    authDomain: 'metal-tile-dev1.firebaseapp.com',
-    projectId: 'metal-tile-dev1',
+declare var firebase: any;
+declare var phina: any;
+declare var Label: any;
+declare var GameApp: any;
 
-    firestoreOptions: {
-        // Enable offline support
-        persistence: true
+// phina.js をグローバル領域に展開
+phina.globalize();
+
+// MainScene クラスを定義
+phina.define('MainScene', {
+    superClass: 'DisplayScene',
+    init: function () {
+        this.superInit();
+        // 背景色を指定
+        this.backgroundColor = '#444';
+        // ラベルを生成
+        this.label = Label('Hello, phina.js!').addChildTo(this);
+        this.label.x = this.gridX.center(); // x 座標
+        this.label.y = this.gridY.center(); // y 座標
+        this.label.fill = 'white'; // 塗りつぶし色
     },
 });
 
-// Initialize Cloud Firestore through firebase
-var db = firebase.firestore();
+// メイン処理
+phina.main(function () {
+    var app = GameApp({
+        startLabel: 'main', // メインシーンから開始する
+        width: MetalTile.GameConfig.SCREEN_WIDTH,
+        height: MetalTile.GameConfig.SCREEN_HEIGHT,
+    });
 
-// Add a new document in collection "cities" with ID "DC"
-db.collection("cities").doc("TS").set({
-    name: "Washington D.C.",
-    weather: "politically stormy"
-})
-.then(function() {
-    console.log("Document successfully written!");
-})
-.catch(function(error) {
-    console.error("Error writing document: ", error);
+    app.enableStats();
+    app.run();
 });
 
-// watchしている箇所を自分で書き換えた場合、2回onSnapshot()が呼ばれる
-(function() {
-    db.collection("cities").doc("SF")
-        .onSnapshot(function(doc) {
-            console.log("Current data: ", doc && doc.data());
+function startFirestore() {
+    firebase.initializeApp({
+        apiKey: 'AIzaSyBpU_0jiRRwU_cORczIBeMPmOiZtUhct4w',
+        authDomain: 'metal-tile-dev1.firebaseapp.com',
+        projectId: 'metal-tile-dev1',
+
+        firestoreOptions: {
+            // Enable offline support
+            persistence: true
+        },
+    });
+
+    // Initialize Cloud Firestore through firebase
+    var db = firebase.firestore();
+
+    // Add a new document in collection "cities" with ID "DC"
+    db.collection("cities").doc("TS").set({
+        name: "Washington D.C.",
+        weather: "politically stormy"
+    })
+        .then(function () {
+            console.log("Document successfully written!");
+        })
+        .catch(function (error) {
+            console.error("Error writing document: ", error);
         });
 
-    // After 2 seconds, make an update so our listener will fire again.
-    setTimeout(function() {
-        db.collection("cities").doc("SF").update({ population: 999999 });
-    }, 2000);
+    // watchしている箇所を自分で書き換えた場合、2回onSnapshot()が呼ばれる
+    (function () {
+        db.collection("cities").doc("SF")
+            .onSnapshot(function (doc) {
+                console.log("Current data: ", doc && doc.data());
+            });
 
-    // RESULT:
-    // Current data: {name: "San Francisco", population: 864816, state: "CA"}
-    //
-    // Current data: {name: "San Francisco", population: 999999, state: "CA"}
-    // Current data: {name: "San Francisco", population: 999999, state: "CA"}
-})();
+        // After 2 seconds, make an update so our listener will fire again.
+        setTimeout(function () {
+            db.collection("cities").doc("SF").update({ population: 999999 });
+        }, 2000);
 
-// 自分で更新した時は最初にPendingWrites = "Local"でイベントが飛んでくる。
-// その後、Serverへの反映が完了したら、PendingWrites = "Server"のイベントが飛んでくる。
-(function() {
-    db.collection("cities").doc("NFC")
-        .onSnapshot(function(doc) {
-            var source = doc.metadata.hasPendingWrites ? "Local" : "Server";
-            console.log(source, " data: ", doc && doc.data());
-        });
+        // RESULT:
+        // Current data: {name: "San Francisco", population: 864816, state: "CA"}
+        //
+        // Current data: {name: "San Francisco", population: 999999, state: "CA"}
+        // Current data: {name: "San Francisco", population: 999999, state: "CA"}
+    })();
 
-    // After 2 seconds, make an update so our listener will fire again.
-    setTimeout(function() {
-        db.collection("cities").doc("SF").update({ population: 1000000 });
-    }, 2000);
+    // 自分で更新した時は最初にPendingWrites = "Local"でイベントが飛んでくる。
+    // その後、Serverへの反映が完了したら、PendingWrites = "Server"のイベントが飛んでくる。
+    (function () {
+        db.collection("cities").doc("NFC")
+            .onSnapshot(function (doc) {
+                var source = doc.metadata.hasPendingWrites ? "Local" : "Server";
+                console.log(source, " data: ", doc && doc.data());
+            });
 
-    // RESULT:
-    // Server data: {name: "San Francisco", population: 999999, state: "CA"}
-    //
-    // Local data: {name: "San Francisco", population: 1000000, state: "CA"}
-    // Server data: {name: "San Francisco", population: 1000000, state: "CA"}
-});
+        // After 2 seconds, make an update so our listener will fire again.
+        setTimeout(function () {
+            db.collection("cities").doc("SF").update({ population: 1000000 });
+        }, 2000);
+
+        // RESULT:
+        // Server data: {name: "San Francisco", population: 999999, state: "CA"}
+        //
+        // Local data: {name: "San Francisco", population: 1000000, state: "CA"}
+        // Server data: {name: "San Francisco", population: 1000000, state: "CA"}
+    });
+}
