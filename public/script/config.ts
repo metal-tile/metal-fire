@@ -16,7 +16,8 @@ namespace MetalTile {
         public static get ASSETS():any {
             return {
                 image : {
-                    "ground": "/image/mapchip/ground.png"
+                    "player" : "/image/character/sara.png",
+                    "ground" : "/image/mapchip/ground.png"
                 },
             };
         }
