@@ -14,7 +14,7 @@ phina.define('MainScene', {
     superClass: 'DisplayScene',
     init: function () {
         this.superInit();
-        
+
         // マップ
         this.bg = Sprite("ground").addChildTo(this);
         this.bg.setPosition(0, 0);
@@ -29,6 +29,16 @@ phina.define('MainScene', {
         this.player.origin.set(0, 0); // 左上基準に変更
         this.player.frameIndex = 0;
     },
+
+    update: function (app) {
+        // 4フレームごとにアニメーションを進める
+        if (app.frame % 4 === 0) {
+            this.player.frameIndex++;
+            if (this.player.frameIndex > 12) {
+                this.player.frameIndex = 0;
+            }
+        }
+    }
 });
 
 // メイン処理
