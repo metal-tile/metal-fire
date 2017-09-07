@@ -15,17 +15,22 @@ phina.define('MainScene', {
     init: function () {
         this.superInit();
 
-        // マップ
-        this.bg = Sprite("ground").addChildTo(this);
-        this.bg.setPosition(0, 0);
-        this.bg.origin.set(0, 0); // 左上基準に変更
+        for (var row = 0; row < 32; row++) {
+            for (var col = 0; col < 48; col++) {
+                var chipImage = "ground";
+                if (row % 2 == 0 && col % 2 == 0) {
+                    chipImage = "grassland"
+                }
+                this.bg = Sprite(chipImage).addChildTo(this);
+                this.bg.setPosition(MetalTile.GameConfig.CHIP_SIZE * col, MetalTile.GameConfig.CHIP_SIZE * row);
+                this.bg.origin.set(0, 0); // 左上基準に変更
 
-        this.bg1 = Sprite("ground").addChildTo(this);
-        this.bg1.setPosition(MetalTile.GameConfig.CHIP_SIZE * 1, 0);
-        this.bg1.origin.set(0, 0); // 左上基準に変更
+                console.log(row + ":" + col);
+            }
+        }   
 
         this.player = Sprite("player", 32, 48).addChildTo(this);
-        this.player.setPosition(MetalTile.GameConfig.SCREEN_WIDTH / 2, MetalTile.GameConfig.SCREEN_HEIGHT / 2);
+        this.player.setPosition((MetalTile.GameConfig.SCREEN_WIDTH / 2) - (32 / 2), (MetalTile.GameConfig.SCREEN_HEIGHT / 2) - (48 / 2));
         this.player.origin.set(0, 0); // 左上基準に変更
         this.player.frameIndex = 0;
     },
