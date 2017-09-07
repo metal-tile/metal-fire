@@ -13,7 +13,12 @@ phina.globalize();
 phina.define('MainScene', {
     superClass: 'DisplayScene',
     init: function () {
-        this.superInit();
+        this.superInit(
+            {
+                width: MetalTile.GameConfig.SCREEN_WIDTH,
+                height : MetalTile.GameConfig.SCREEN_HEIGHT
+            }
+        );
 
         for (var row = 0; row < 32; row++) {
             for (var col = 0; col < 48; col++) {
@@ -24,10 +29,8 @@ phina.define('MainScene', {
                 this.bg = Sprite(chipImage).addChildTo(this);
                 this.bg.setPosition(MetalTile.GameConfig.CHIP_SIZE * col, MetalTile.GameConfig.CHIP_SIZE * row);
                 this.bg.origin.set(0, 0); // 左上基準に変更
-
-                console.log(row + ":" + col);
             }
-        }   
+        }
 
         this.player = Sprite("player", 32, 48).addChildTo(this);
         this.player.setPosition((MetalTile.GameConfig.SCREEN_WIDTH / 2) - (32 / 2), (MetalTile.GameConfig.SCREEN_HEIGHT / 2) - (48 / 2));
