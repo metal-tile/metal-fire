@@ -6,6 +6,7 @@ declare var Label: any;
 declare var GameApp: any;
 declare var Sprite: any;
 declare var MapSprite: any;
+declare var Player: any;
 
 // phina.js をグローバル領域に展開
 phina.globalize();
@@ -22,21 +23,11 @@ phina.define('MainScene', {
         );
 
         this.map = new MapSprite().addChildTo(this);
-
-        this.player = Sprite("player", 32, 48).addChildTo(this);
-        this.player.setPosition((MetalTile.GameConfig.SCREEN_WIDTH / 2) - (32 / 2), (MetalTile.GameConfig.SCREEN_HEIGHT / 2) - (48 / 2));
-        this.player.origin.set(0, 0); // 左上基準に変更
-        this.player.frameIndex = 0;
+        this.player = new Player().addChildTo(this);
     },
 
     update: function (app) {
-        // 4フレームごとにアニメーションを進める
-        if (app.frame % 4 === 0) {
-            this.player.frameIndex++;
-            if (this.player.frameIndex > 12) {
-                this.player.frameIndex = 0;
-            }
-        }
+        this.map.updatePlayerPosition(this.player.position.x, this.player.position.y);
     }
 });
 

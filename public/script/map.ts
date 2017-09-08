@@ -8,8 +8,16 @@ phina.define('MapSprite', {
         this.width  = 32;
         this.height = 32;
 
+        this.playerPositionX = 0;
+        this.playerPositionY = 0;
+
         this.currentFrame = 0;
         this.currentFrameIndex = 0;
+    },
+
+    updatePlayerPosition: function(x:number, y:number) {
+        console.log(x, y);
+        console.log(x / 32, y / 32);
     },
 
     draw: function(canvas) {
