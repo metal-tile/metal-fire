@@ -16,8 +16,8 @@ phina.define('MapSprite', {
     },
 
     updatePlayerPosition: function(x:number, y:number) {
-        console.log(x, y);
-        console.log(x / 32, y / 32);
+        //console.log(x, y);
+        //console.log(x / 32, y / 32);
     },
 
     draw: function(canvas) {

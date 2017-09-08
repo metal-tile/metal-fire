@@ -1,3 +1,5 @@
+/// <reference path="firestore.ts" />
+
 phina.define('Player', {
     superClass: 'Sprite',
     init: function () {
@@ -15,6 +17,9 @@ phina.define('Player', {
             if (this.frameIndex > 12) {
                 this.frameIndex = 0;
             }
+        }
+        if (app.frame % 4 === 0) {
+            MetalTile.Firestore.updatePlayerPosition(1000, 1000);
         }
     }
 });
