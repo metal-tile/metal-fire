@@ -1,4 +1,5 @@
 /// <reference path="config.ts" />
+/// <reference path="player.ts" />
 
 declare var firebase: any;
 declare var phina: any;
@@ -6,7 +7,7 @@ declare var Label: any;
 declare var GameApp: any;
 declare var Sprite: any;
 declare var MapSprite: any;
-declare var Player: any;
+declare var PlayerSprite: any;
 
 // phina.js をグローバル領域に展開
 phina.globalize();
@@ -23,17 +24,17 @@ phina.define('MainScene', {
         );
 
         this.map = new MapSprite().addChildTo(this);
-        this.player = new Player().addChildTo(this);
-    },
+        this.player = new PlayerSprite().addChildTo(this);
 
-    update: function (app) {
-        this.map.updatePlayerPosition(this.player.position.x, this.player.position.y);
-    }
+        // FIXME とりあえず適当に初期ポジションを入れておく
+        MetalTile.Player.updatePosition(1000, 1000);
+    },
 });
 
 // メイン処理
 phina.main(function () {
     MetalTile.Firestore.initialize("sinmetal");
+    MetalTile.Firestore.watchMap();
 
     var app = GameApp({
         startLabel: 'main', // メインシーンから開始する
