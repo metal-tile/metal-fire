@@ -30,12 +30,8 @@ phina.define('PlayerSprite', {
 
         // 4フレームごとにアニメーションを進める
         if (app.frame % 4 === 0) {
-            this.frameIndex++;
-            if (this.frameIndex > 12) {
-                this.frameIndex = 0;
-            }
-        }
-        if (app.frame % 4 === 0) {
+            this.frameIndex = MetalTile.Player.nextFrame();
+
             let playerPosition = MetalTile.Player.getPosition();
             MetalTile.Firestore.updatePlayerPosition(playerPosition.x, playerPosition.y);
         }
