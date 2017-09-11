@@ -15,22 +15,30 @@ phina.define('PlayerSprite', {
 
     update: function (app) {
         var keyboard = app.keyboard;  
+        let isMove : boolean = false;
         if (keyboard.getKey('w')) {  
             MetalTile.Player.moveUp(4);
+            isMove = true;
         }
         if (keyboard.getKey('s')) {  
             MetalTile.Player.moveDown(4);
+            isMove = true;
         }
         if (keyboard.getKey('a')) {  
             MetalTile.Player.moveLeft(4);
+            isMove = true;
         }
         if (keyboard.getKey('d')) {  
             MetalTile.Player.moveRight(4);
+            isMove = true;
         }
 
         // 4フレームごとにアニメーションを進める
         if (app.frame % 4 === 0) {
-            this.frameIndex = MetalTile.Player.nextFrame();
+            if (isMove) {
+                // 移動中のみアニメーションする
+                this.frameIndex = MetalTile.Player.nextFrame();
+            }
 
             let playerPosition = MetalTile.Player.getPosition();
             MetalTile.Firestore.updatePlayerPosition(playerPosition.x, playerPosition.y);
