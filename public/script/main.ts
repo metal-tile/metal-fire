@@ -8,6 +8,7 @@ declare var GameApp: any;
 declare var Sprite: any;
 declare var MapSprite: any;
 declare var PlayerSprite: any;
+declare var DebuggerLabel: any;
 
 // phina.js をグローバル領域に展開
 phina.globalize();
@@ -25,6 +26,7 @@ phina.define('MainScene', {
 
         this.map = new MapSprite().addChildTo(this);
         this.player = new PlayerSprite().addChildTo(this);
+        this.debuggerLabel = new DebuggerLabel().addChildTo(this);
 
         // FIXME とりあえず適当に初期ポジションを入れておく
         MetalTile.Player.updatePosition(1000, 1000);
