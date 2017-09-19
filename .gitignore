@@ -16,3 +16,6 @@
 *.log
 
 public/script/*.js
+
+# IDEA
+.idea/
