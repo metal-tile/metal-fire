@@ -1,7 +1,7 @@
 /// <reference path="firestore.ts" />
 /// <reference path="config.ts" />
 
-declare var phina: any;
+declare let phina: any;
 
 phina.define('PlayerSprite', {
     superClass: 'Sprite',
@@ -14,7 +14,7 @@ phina.define('PlayerSprite', {
     },
 
     update: function (app) {
-        var keyboard = app.keyboard;  
+        let keyboard = app.keyboard;
         let isMove : boolean = false;
         if (keyboard.getKey('w')) {  
             MetalTile.Player.moveUp(4);
@@ -42,6 +42,12 @@ phina.define('PlayerSprite', {
 
             let playerPosition = MetalTile.Player.getPosition();
             MetalTile.Firestore.updatePlayerPosition(playerPosition.x, playerPosition.y);
+        }
+
+        if (MetalTile.Debugger.isShow) {
+            let pp = MetalTile.Player.getPosition();
+            MetalTile.Debugger.setValue("Player X", pp.x);
+            MetalTile.Debugger.setValue("Player Y", pp.y);
         }
     }
 });

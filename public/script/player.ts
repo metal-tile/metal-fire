@@ -9,7 +9,8 @@ namespace MetalTile {
             180 : 0,
             270 : 3,
             90 : 6,
-        }
+        };
+
         static readonly animetionFrameSize = 3;
         public static x : number;
         public static y : number;
