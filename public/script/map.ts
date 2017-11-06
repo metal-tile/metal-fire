@@ -25,8 +25,8 @@ phina.define('MapSprite', {
         let startRow = Math.floor(playerPosition.y / MetalTile.GameConfig.CHIP_SIZE - (MetalTile.GameConfig.SCREEN_HEIGHT / 2 / MetalTile.GameConfig.CHIP_SIZE));
         let startCol = Math.floor(playerPosition.x / MetalTile.GameConfig.CHIP_SIZE - (MetalTile.GameConfig.SCREEN_WIDTH / 2 / MetalTile.GameConfig.CHIP_SIZE));
 
-        let fractionY = playerPosition.y % MetalTile.GameConfig.CHIP_SIZE
-        let fractionX = playerPosition.x % MetalTile.GameConfig.CHIP_SIZE
+        let fractionY = playerPosition.y % MetalTile.GameConfig.CHIP_SIZE;
+        let fractionX = playerPosition.x % MetalTile.GameConfig.CHIP_SIZE;
 
         for (var row = startRow; row < startRow + 32 + 1; ++row) {
             for (var col = startCol; col < startCol + 48 + 1; ++col) {
