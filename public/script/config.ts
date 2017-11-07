@@ -17,8 +17,8 @@ namespace MetalTile {
             return {
                 image : {
                     "player" : "/image/character/sara.png",
-                    "ground" : "/image/mapchip/ground.png",
-                    "grassland" : "/image/mapchip/grassland.png"
+                    "chip000" : "/image/mapchip/ground.png",
+                    "chip001" : "/image/mapchip/grassland.png"
                 },
             };
         }

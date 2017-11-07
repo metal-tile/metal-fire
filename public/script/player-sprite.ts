@@ -1,6 +1,9 @@
 /// <reference path="firestore.ts" />
 /// <reference path="config.ts" />
 
+import Player = MetalTile.Player;
+import LandContoller = MetalTile.LandContoller;
+import Firestore = MetalTile.Firestore;
 declare let phina: any;
 
 phina.define('PlayerSprite', {
@@ -31,6 +34,14 @@ phina.define('PlayerSprite', {
         if (keyboard.getKey('d')) {  
             MetalTile.Player.moveRight(4);
             isMove = true;
+        }
+
+        if (keyboard.getKey('1')) {
+            let rowCol = LandContoller.getRowCol(Player.x, Player.y);
+            MetalTile.Debugger.setValue("CenterRow", rowCol.row);
+            MetalTile.Debugger.setValue("CenterCol", rowCol.col);
+            // TODO 自分の前方のタイルを変えてあげる
+            Firestore.updateLandTile(rowCol.row, rowCol.col, 1);
         }
 
         // 4フレームごとにアニメーションを進める

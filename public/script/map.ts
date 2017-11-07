@@ -28,25 +28,19 @@ phina.define('MapSprite', {
         let fractionY = playerPosition.y % MetalTile.GameConfig.CHIP_SIZE;
         let fractionX = playerPosition.x % MetalTile.GameConfig.CHIP_SIZE;
 
-        for (var row = startRow; row < startRow + 32 + 1; ++row) {
-            for (var col = startCol; col < startCol + 48 + 1; ++col) {
-                let assetName = "ground";
-                if (row % 2 == 0) {
-                    assetName = "grassland";
-                }
-                if (col % 2 == 0) {
-                    assetName = "grassland";
-                }
+        for (let row = startRow; row < startRow + 32 + 1; ++row) {
+            for (let col = startCol; col < startCol + 48 + 1; ++col) {
                 if (row < 0 || col < 0 || row > land.length || col > land[0].length) {
                     // landの端
                     continue;
                 }
 
-                var element = phina.asset.AssetManager.get("image", assetName).domElement;
+                let assetName = "chip" + ("000" + land[row][col].chip).substr(-3);
+                let element = phina.asset.AssetManager.get("image", assetName).domElement;
 
                 // dx, dyはマイナスでもよいっぽいので、現在位置からのずれをdx, dyで計算すれば良さそう
-                var dx = (col - startCol) * 32 - fractionX;
-                var dy = (row - startRow) * 32 - fractionY;
+                let dx = (col - startCol) * 32 - fractionX;
+                let dy = (row - startRow) * 32 - fractionY;
 
                 // http://www.html5.jp/canvas/ref/method/drawImage.html
                 canvas.drawImage(
