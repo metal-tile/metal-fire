@@ -56,6 +56,34 @@ namespace MetalTile {
             return (this.angle === 90);
         }
 
+        public static getAheadPosition() : any {
+            if (this.isAngleUp()) {
+                return {
+                    x : this.x,
+                    y : this.y - 25
+                }
+            }
+            if (this.isAngleDown()) {
+                return {
+                    x : this.x,
+                    y : this.y + 40 // 下の方がキャラクターの中心より遠いので、多めに下を見る
+                }
+            }
+            const foot = 10; // 足元を見る調整値
+            if (this.isAngleLeft()) {
+                return {
+                    x : this.x - 25,
+                    y : this.y + foot
+                }
+            }
+            if (this.isAngleRight()) {
+                return {
+                    x : this.x + 25,
+                    y : this.y + foot
+                }
+            }
+        }
+
         public static nextFrame() : number {
             let startFrameIndex = this.animetion[this.angle];
             if (this.currentFrame < startFrameIndex || this.currentFrame >= startFrameIndex + this.animetionFrameSize) {
