@@ -4,7 +4,7 @@ phina.define('DebuggerLabel', {
         this.superInit("DebuggerLabel");
         this.x = 20;
         this.y = 100;
-        this.fontSize = 24;
+        this.fontSize = 16;
         this.fill = "#EEE";
         this.align = "left";
         this.backgroundColor = "rgba(80, 80, 80, 0.6)";
