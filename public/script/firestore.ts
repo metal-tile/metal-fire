@@ -34,13 +34,38 @@ namespace MetalTile {
                 });
         }
 
+        public static updateLandTile(row : number, col : number, chip : number) {
+            let landName = "world-default20170908-land-home";
+            let docID = "row-" + ("000" + row).substr(-3) + "-col-" + ("000" + col).substr(-3);
+            console.log(docID);
+            this.db.collection(landName).doc(docID).update({
+                chip: chip,
+                hitPoint: 1000
+            })
+                .then(function() {
+                    console.log("Document successfully written!");
+                })
+                .catch(function(error) {
+                    console.error("Error writing document: ", error);
+                });
+        }
+
         public static watchMap() {
             let landName = "world-default20170908-land-home";
             this.db.collection(landName)
                 .onSnapshot(function(snapshot) {
                     snapshot.docChanges.forEach(function(change) {
-                        //["projects","metal-tile-dev1","databases","(default)","documents","world-default20170908-land-home","row-049-col-024"] が入っている
-                        let sl = change.doc.et.key.path.segments[6].split("-");
+                        let keyNamePosition;
+                        if (change.doc.metadata.hasPendingWrites) {
+                            // Local
+                            //["world-default20170908-land-home","row-049-col-024"] が入っている
+                            keyNamePosition = 1;
+                        } else {
+                            // Server
+                            //["projects","metal-tile-dev1","databases","(default)","documents","world-default20170908-land-home","row-049-col-024"] が入っている
+                            keyNamePosition = 6;
+                        }
+                        let sl = change.doc.et.key.path.segments[keyNamePosition].split("-");
                         let row = parseInt(sl[1]);
                         let col = parseInt(sl[3]);
                         MetalTile.LandContoller.setMapChip(landName, row, col, change.doc.data());

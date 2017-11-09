@@ -1,6 +1,9 @@
 /// <reference path="firestore.ts" />
 /// <reference path="config.ts" />
 
+import Player = MetalTile.Player;
+import LandContoller = MetalTile.LandContoller;
+import Firestore = MetalTile.Firestore;
 declare let phina: any;
 
 phina.define('PlayerSprite', {
@@ -31,6 +34,14 @@ phina.define('PlayerSprite', {
         if (keyboard.getKey('d')) {  
             MetalTile.Player.moveRight(4);
             isMove = true;
+        }
+
+        if (keyboard.getKey('1')) {
+            let position = Player.getAheadPosition();
+            let aheadRowCol = LandContoller.getRowCol(position.x, position.y);
+
+            // TODO ひたすらupdateし続けると遅いので、所持アイテムと対象のタイルを比べて変化がない場合は、updateしないようにする
+            Firestore.updateLandTile(aheadRowCol.row, aheadRowCol.col, 1);
         }
 
         // 4フレームごとにアニメーションを進める

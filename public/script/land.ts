@@ -18,6 +18,16 @@ namespace MetalTile {
             this.landMap.get(landName)[row][col] = mapChip;
         }
 
+        public static getRowCol(x : number, y : number) {
+            let centerRow = Math.floor(y / MetalTile.GameConfig.CHIP_SIZE);
+            let centerCol = Math.floor(x / MetalTile.GameConfig.CHIP_SIZE);
+
+            return {
+                row : centerRow,
+                col : centerCol
+            }
+        }
+
         public static getLand(landName : string):any {
             if (!this.landMap.get(landName)) {
                 return new Array();
