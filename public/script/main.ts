@@ -1,8 +1,9 @@
 /// <reference path="config.ts" />
 /// <reference path="player.ts" />
+/// <reference path="player-controller.ts" />
 
 declare var firebase: any;
-declare var phina: any;
+declare let phina: any;
 declare var Label: any;
 declare var GameApp: any;
 declare var Sprite: any;
@@ -29,16 +30,21 @@ phina.define('MainScene', {
         this.debuggerLabel = new DebuggerLabel().addChildTo(this);
 
         // FIXME とりあえず適当に初期ポジションを入れておく
-        MetalTile.Player.updatePosition(1000, 1000);
+        PlayerController.getMyPlayer().updatePosition(1000, 1000);
     },
 });
 
 // メイン処理
 phina.main(function () {
-    MetalTile.Firestore.initialize("sinmetal");
+    // TODO Firebase Authでユーザ名を置き換える
+    let dt = new Date();
+    let userName = "user" + dt.getMinutes();
+    MetalTile.Debugger.setValue("userName", userName);
+    MetalTile.Firestore.initialize(userName);
     MetalTile.Firestore.watchMap();
+    MetalTile.Firestore.watchPlayer();
 
-    var app = GameApp({
+    let app = GameApp({
         startLabel: 'main', // メインシーンから開始する
         width: MetalTile.GameConfig.SCREEN_WIDTH,
         height: MetalTile.GameConfig.SCREEN_HEIGHT,

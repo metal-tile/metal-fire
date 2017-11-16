@@ -4,6 +4,7 @@
 import Player = MetalTile.Player;
 import LandContoller = MetalTile.LandContoller;
 import Firestore = MetalTile.Firestore;
+import PlayerController = MetalTile.PlayerController;
 declare let phina: any;
 
 phina.define('PlayerSprite', {
@@ -18,26 +19,27 @@ phina.define('PlayerSprite', {
 
     update: function (app) {
         let keyboard = app.keyboard;
+        let myPlayer = PlayerController.getMyPlayer();
         let isMove : boolean = false;
-        if (keyboard.getKey('w')) {  
-            MetalTile.Player.moveUp(4);
+        if (keyboard.getKey('w')) {
+            myPlayer.moveUp(4);
             isMove = true;
         }
-        if (keyboard.getKey('s')) {  
-            MetalTile.Player.moveDown(4);
+        if (keyboard.getKey('s')) {
+            myPlayer.moveDown(4);
             isMove = true;
         }
-        if (keyboard.getKey('a')) {  
-            MetalTile.Player.moveLeft(4);
+        if (keyboard.getKey('a')) {
+            myPlayer.moveLeft(4);
             isMove = true;
         }
-        if (keyboard.getKey('d')) {  
-            MetalTile.Player.moveRight(4);
+        if (keyboard.getKey('d')) {
+            myPlayer.moveRight(4);
             isMove = true;
         }
 
         if (keyboard.getKey('1')) {
-            let position = Player.getAheadPosition();
+            let position = myPlayer.getAheadPosition();
             let aheadRowCol = LandContoller.getRowCol(position.x, position.y);
 
             // TODO ひたすらupdateし続けると遅いので、所持アイテムと対象のタイルを比べて変化がない場合は、updateしないようにする
@@ -48,15 +50,15 @@ phina.define('PlayerSprite', {
         if (app.frame % 4 === 0) {
             if (isMove) {
                 // 移動中のみアニメーションする
-                this.frameIndex = MetalTile.Player.nextFrame();
+                this.frameIndex = myPlayer.nextFrame();
             }
 
-            let playerPosition = MetalTile.Player.getPosition();
+            let playerPosition = myPlayer.getPosition();
             MetalTile.Firestore.updatePlayerPosition(playerPosition.x, playerPosition.y);
         }
 
         if (MetalTile.Debugger.isShow) {
-            let pp = MetalTile.Player.getPosition();
+            let pp = myPlayer.getPosition();
             MetalTile.Debugger.setValue("Player X", pp.x);
             MetalTile.Debugger.setValue("Player Y", pp.y);
         }
