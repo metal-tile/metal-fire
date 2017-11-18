@@ -1,8 +1,6 @@
 /// <reference path="config.ts" />
 /// <reference path="land.ts" />
 
-declare var phina: any;
-
 phina.define('MapSprite', {
     superClass: 'DisplayElement',
     init: function () {
@@ -20,7 +18,8 @@ phina.define('MapSprite', {
 
     draw: function(canvas) {
         let land = MetalTile.LandContoller.getLand("world-default20170908-land-home");
-        let playerPosition = MetalTile.Player.getPosition();
+        let myPlayer = PlayerController.getMyPlayer();
+        let playerPosition = myPlayer.getPosition();
 
         let startRow = Math.floor(playerPosition.y / MetalTile.GameConfig.CHIP_SIZE - (MetalTile.GameConfig.SCREEN_HEIGHT / 2 / MetalTile.GameConfig.CHIP_SIZE));
         let startCol = Math.floor(playerPosition.x / MetalTile.GameConfig.CHIP_SIZE - (MetalTile.GameConfig.SCREEN_WIDTH / 2 / MetalTile.GameConfig.CHIP_SIZE));

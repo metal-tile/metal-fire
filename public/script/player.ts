@@ -1,62 +1,64 @@
 namespace MetalTile {
     
     export class Player {
-        
-        public static angle : number;
-        public static currentFrame : number = 0;
-        public static animetion : any = {
+
+        public id : string;
+        public angle : number = 180;
+        public isMove : boolean;
+        public currentFrame : number = 0;
+        public animetion : any = {
             0 : 9,
             180 : 0,
             270 : 3,
             90 : 6,
         };
 
-        static readonly animetionFrameSize = 3;
-        public static x : number;
-        public static y : number;
+        readonly animetionFrameSize = 3;
+        public x : number;
+        public y : number;
 
-        public static updatePosition(x : number, y : number) {
+        public updatePosition(x : number, y : number) {
             this.x = x;
             this.y = y;
         }
 
-        public static moveUp(spped : number) {
+        public moveUp(spped : number) {
             this.y -= spped;
             this.angle = 0;
         }
 
-        public static moveDown(spped : number) {
+        public moveDown(spped : number) {
             this.y += spped;
             this.angle = 180;
         }
 
-        public static moveLeft(spped : number) {
+        public moveLeft(spped : number) {
             this.x -= spped;
             this.angle = 270;
         }
 
-        public static moveRight(spped : number) {
+        public moveRight(spped : number) {
             this.x += spped;
             this.angle = 90;
         }
 
-        public static isAngleUp() : boolean {
+        public isAngleUp() : boolean {
             return (this.angle === 0);
         }
 
-        public static isAngleDown() : boolean {
+        public isAngleDown() : boolean {
             return (this.angle === 180);
         }
 
-        public static isAngleLeft() : boolean {
+        public isAngleLeft() : boolean {
             return (this.angle === 270);
         }
 
-        public static isAngleRight() : boolean {
+        public isAngleRight() : boolean {
             return (this.angle === 90);
         }
 
-        public static getAheadPosition() : any {
+        public getAheadPosition() : any {
             if (this.isAngleUp()) {
                 return {
                     x : this.x,
@@ -84,7 +86,7 @@ namespace MetalTile {
             }
         }
 
-        public static nextFrame() : number {
+        public nextFrame() : number {
             let startFrameIndex = this.animetion[this.angle];
             if (this.currentFrame < startFrameIndex || this.currentFrame >= startFrameIndex + this.animetionFrameSize) {
                 this.currentFrame = startFrameIndex;
@@ -94,7 +96,7 @@ namespace MetalTile {
             return this.currentFrame++;
         }
 
-        public static getPosition() : any {
+        public getPosition() : any {
             return {
                 x : this.x,
                 y : this.y

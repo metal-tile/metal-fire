@@ -1,15 +1,19 @@
 /// <reference path="firestore.ts" />
 /// <reference path="config.ts" />
+/// <reference path="debugger.ts" />
 
 import Player = MetalTile.Player;
 import LandContoller = MetalTile.LandContoller;
 import Firestore = MetalTile.Firestore;
-declare let phina: any;
+import PlayerController = MetalTile.PlayerController;
+import Debugger = MetalTile.Debugger;
 
 phina.define('PlayerSprite', {
     superClass: 'Sprite',
-    init: function () {
-        this.superInit("player", 32, 48);
+    init: function (player : Player, asset : string) {
+        this.superInit(asset, 32, 48);
+
+        this.player = player;
 
         this.setPosition((MetalTile.GameConfig.SCREEN_WIDTH / 2) - (32 / 2), (MetalTile.GameConfig.SCREEN_HEIGHT / 2) - (48 / 2));
         this.origin.set(0, 0); // 左上基準に変更
@@ -19,46 +23,45 @@ phina.define('PlayerSprite', {
     update: function (app) {
         let keyboard = app.keyboard;
         let isMove : boolean = false;
-        if (keyboard.getKey('w')) {  
-            MetalTile.Player.moveUp(4);
+
+        if (keyboard.getKey('w')) {
+            this.player.moveUp(4);
             isMove = true;
         }
-        if (keyboard.getKey('s')) {  
-            MetalTile.Player.moveDown(4);
+        if (keyboard.getKey('s')) {
+            this.player.moveDown(4);
             isMove = true;
         }
-        if (keyboard.getKey('a')) {  
-            MetalTile.Player.moveLeft(4);
+        if (keyboard.getKey('a')) {
+            this.player.moveLeft(4);
             isMove = true;
         }
-        if (keyboard.getKey('d')) {  
-            MetalTile.Player.moveRight(4);
+        if (keyboard.getKey('d')) {
+            this.player.moveRight(4);
             isMove = true;
         }
 
         if (keyboard.getKey('1')) {
-            let position = Player.getAheadPosition();
+            let position = this.player.getAheadPosition();
             let aheadRowCol = LandContoller.getRowCol(position.x, position.y);
 
             // TODO ひたすらupdateし続けると遅いので、所持アイテムと対象のタイルを比べて変化がない場合は、updateしないようにする
             Firestore.updateLandTile(aheadRowCol.row, aheadRowCol.col, 1);
         }
 
+        if (Debugger.isShow) {
+            let pp = this.player.getPosition();
+            Debugger.setValue("Player X", pp.x);
+            Debugger.setValue("Player Y", pp.y);
+        }
+
         // 4フレームごとにアニメーションを進める
         if (app.frame % 4 === 0) {
             if (isMove) {
                 // 移動中のみアニメーションする
-                this.frameIndex = MetalTile.Player.nextFrame();
+                this.frameIndex = this.player.nextFrame();
             }
-
-            let playerPosition = MetalTile.Player.getPosition();
-            MetalTile.Firestore.updatePlayerPosition(playerPosition.x, playerPosition.y);
-        }
-
-        if (MetalTile.Debugger.isShow) {
-            let pp = MetalTile.Player.getPosition();
-            MetalTile.Debugger.setValue("Player X", pp.x);
-            MetalTile.Debugger.setValue("Player Y", pp.y);
+            Firestore.updatePlayerPosition(this.player.x, this.player.y, this.player.angle, isMove);
         }
     }
 });

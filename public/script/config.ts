@@ -13,6 +13,14 @@ namespace MetalTile {
             return 32;
         }
 
+        public static get CHRACTER_WIDTH():number {
+            return 32;
+        }
+
+        public static get CHRACTER_HEIGHT():number {
+            return 48;
+        }
+
         public static get ASSETS():any {
             return {
                 image : {
