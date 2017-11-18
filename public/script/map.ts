@@ -1,8 +1,6 @@
 /// <reference path="config.ts" />
 /// <reference path="land.ts" />
 
-declare let phina: any;
-
 phina.define('MapSprite', {
     superClass: 'DisplayElement',
     init: function () {

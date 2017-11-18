@@ -3,7 +3,8 @@ namespace MetalTile {
     export class Player {
 
         public id : string;
-        public angle : number;
+        public angle : number = 180;
+        public isMove : boolean;
         public currentFrame : number = 0;
         public animetion : any = {
             0 : 9,

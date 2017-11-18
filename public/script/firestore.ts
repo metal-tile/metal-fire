@@ -22,10 +22,12 @@ namespace MetalTile {
             this.initializeApp = true;
         }
 
-        public static updatePlayerPosition(x : number, y : number) {
+        public static updatePlayerPosition(x : number, y : number, angle : number, isMove : boolean) {
             this.db.collection("world-default-player-position").doc(this.id).set({
                 x : x,
                 y : y,
+                angle : angle,
+                isMove : isMove,
             })
                 .then(function () {
                 })
@@ -50,6 +52,27 @@ namespace MetalTile {
                 });
         }
 
+        public static watchPlayer() {
+            this.db.collection("world-default-player-position")
+                .onSnapshot(function(snapshot) {
+                    snapshot.docChanges.forEach(function(change) {
+                        if (change.doc.metadata.hasPendingWrites) {
+                            //noop
+                            return;
+                        }
+                        let player = new Player();
+                        player.id = change.doc.id;
+                        player.x = change.doc.data().x;
+                        player.y = change.doc.data().y;
+                        player.angle = change.doc.data().angle;
+                        player.isMove = change.doc.data().isMove;
+                        PlayerController.setPlayer(player);
+
+                        //Debugger.setValue(change.doc.id, change.doc.data().x + ":" + change.doc.data().y);
+                    });
+                });
+        }
+
         public static watchMap() {
             let landName = "world-default20170908-land-home";
             this.db.collection(landName)
@@ -70,15 +93,15 @@ namespace MetalTile {
                         let col = parseInt(sl[3]);
                         MetalTile.LandContoller.setMapChip(landName, row, col, change.doc.data());
 
-                        if (change.type === "added") {
-                            console.log("New : ", change.doc.data());
-                        }
-                        if (change.type === "modified") {
-                            console.log("Modified : ", change.doc.data());
-                        }
-                        if (change.type === "removed") {
-                            console.log("Removed : ", change.doc.data());
-                        }
+                        // if (change.type === "added") {
+                        //     console.log("New : ", change.doc.data());
+                        // }
+                        // if (change.type === "modified") {
+                        //     console.log("Modified : ", change.doc.data());
+                        // }
+                        // if (change.type === "removed") {
+                        //     console.log("Removed : ", change.doc.data());
+                        // }
                     });
                 });
         }
