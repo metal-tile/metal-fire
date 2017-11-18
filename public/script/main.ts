@@ -16,6 +16,7 @@ declare let Sprite: any;
 declare let MapSprite: any;
 declare let PlayerSprite: any;
 declare let OtherPlayerSprite: any;
+declare let OtherPlayerNameLabelSprite: any;
 declare let DebuggerLabel: any;
 
 // MainScene クラスを定義
