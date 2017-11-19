@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "system",
+    "outFile": "public/script/main.js",
+    "strict": true,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "preserveConstEnums": false,
+    "sourceMap": false
+  },
+  "files": [
+    "public/script/config.ts",
+    "public/script/debugger.ts",
+    "public/script/debugger-label.ts",
+    "public/script/firestore.ts",
+    "public/script/game-controller.ts",
+    "public/script/land.ts",
+    "public/script/main.ts",
+    "public/script/map.ts",
+    "public/script/other-player-name-label-sprite.ts",
+    "public/script/other-player-sprite.ts",
+    "public/script/player.ts",
+    "public/script/player-controller.ts",
+    "public/script/player-sprite.ts"
+  ]
+}

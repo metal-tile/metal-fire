@@ -19,3 +19,5 @@ public/script/*.js
 
 # IDEA
 .idea/
+
+*.js.map
