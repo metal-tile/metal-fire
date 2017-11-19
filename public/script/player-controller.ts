@@ -16,10 +16,12 @@ namespace MetalTile {
                 GameController.currentScene.addChild(OtherPlayerNameLabelSprite(player));
             }
             let p = this.playerMap.get(player.id);
-            p.x = player.x;
-            p.y = player.y;
-            p.angle = player.angle;
-            p.isMove = player.isMove;
+            if (p) {
+                p.x = player.x;
+                p.y = player.y;
+                p.angle = player.angle;
+                p.isMove = player.isMove;
+            }
         }
     }
 }
