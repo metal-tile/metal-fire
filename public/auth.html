@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Auth</title>
+</head>
+<body>
+    Auth Page
+    <div>
+        <input type="text" id="user-name" size="30" maxlength="20">
+        <div id="error-message"></div>
+        <button onclick="createUser()">Create</button>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase-firestore.js"></script>
+    <script>
+        let app = {};
+
+        firebase.initializeApp({
+            apiKey: 'AIzaSyBpU_0jiRRwU_cORczIBeMPmOiZtUhct4w',
+            authDomain: 'metal-tile-dev1.firebaseapp.com',
+            projectId: 'metal-tile-dev1'
+        });
+
+        var provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithPopup(provider).then(function(result) {
+            // This gives you a Google Access Token. You can use it to access the Google API.
+            var token = result.credential.accessToken;
+            // The signed-in user info.
+            var user = result.user;
+            app.user = user;
+            console.log(user);
+
+            firebase.firestore().collection("users").doc(user.uid).get()
+                .then(function(doc) {
+                    if (doc.data().name) {
+                        document.getElementById("user-name").value = doc.data().name;
+                    }
+                })
+                .catch(function(error) {
+                    console.log("error: get user")
+                });
+        }).catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // The email of the user's account used.
+            var email = error.email;
+            // The firebase.auth.AuthCredential type that was used.
+            var credential = error.credential;
+            console.log(error);
+        });
+
+        // FIXME UserNameがUNIQUEになる仕組みを考える
+        function createUser() {
+            let errorMessage = document.getElementById("error-message");
+            errorMessage.innerText = "";
+            let name = document.getElementById("user-name").value;
+            if (name.length < 1) {
+                errorMessage.innerText = "1文字以上の名前を指定してください";
+                return;
+            }
+            firebase.firestore().collection("users").doc(app.user.uid).set({
+                name : name,
+            }).then(function(doc) {
+                location.href="/";
+            }).catch(function(error) {
+                console.log(error);
+            });
+        }
+    </script>
+</body>
+</html>

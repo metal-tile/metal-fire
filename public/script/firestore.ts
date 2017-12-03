@@ -3,9 +3,10 @@ namespace MetalTile {
 
         static initializeApp : boolean;
         static db : any;
-        static id : string;
+        public static user : any;
+        public static userName : string;
 
-        public static initialize(id : string) {
+        public static initialize() {
             if (this.initializeApp) {
                 return;
             }
@@ -18,12 +19,17 @@ namespace MetalTile {
 
             // Initialize Cloud Firestore through firebase
             this.db = firebase.firestore();
-            this.id = id;
             this.initializeApp = true;
         }
 
+        public static getUserName() : any {
+            return this.db.collection("users").doc(this.user.uid).get();
+        }
+
         public static updatePlayerPosition(x : number, y : number, angle : number, isMove : boolean) {
-            this.db.collection("world-default-player-position").doc(this.id).set({
+            // FIXME userNameにするかuser.uidにするか？
+            // ルールを考えると、uidにして、userNameはプロパティにするのが無難か？
+            this.db.collection("world-default-player-position").doc(this.userName).set({
                 x : x,
                 y : y,
                 angle : angle,

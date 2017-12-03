@@ -43,24 +43,55 @@ phina.define('MainScene', {
 
 // メイン処理
 phina.main(function () {
-    let app = GameApp({
-        startLabel: 'main', // メインシーンから開始する
-        width: MetalTile.GameConfig.SCREEN_WIDTH,
-        height: MetalTile.GameConfig.SCREEN_HEIGHT,
-        assets: MetalTile.GameConfig.ASSETS
+    Firestore.initialize();
+
+    let provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().signInWithPopup(provider).then(function(result) {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        let token = result.credential.accessToken;
+        // The signed-in user info.
+        Firestore.user = result.user;
+
+        let app = GameApp({
+            startLabel: 'main', // メインシーンから開始する
+            width: MetalTile.GameConfig.SCREEN_WIDTH,
+            height: MetalTile.GameConfig.SCREEN_HEIGHT,
+            assets: MetalTile.GameConfig.ASSETS
+        });
+        GameController.app = app;
+
+        if (!Firestore.user) {
+            console.log("not login");
+            return;
+        }
+
+        let ref = Firestore.getUserName();
+        ref.then(function(doc) {
+            if (doc.exists) {
+                Firestore.userName = doc.data().name;
+                Debugger.setValue("userName", Firestore.userName);
+                let myPlayer = PlayerController.getMyPlayer();
+                myPlayer.id = Firestore.userName;
+
+                Firestore.watchMap();
+                Firestore.watchPlayer();
+
+                app.enableStats();
+                app.run();
+            } else {
+                location.href = "/auth.html";
+            }
+        }).catch(function(error) {
+            console.log("Error getting document:", error);
+        });
+    }).catch(function(error) {
+        // Handle Errors here.
+        let errorCode = error.code;
+        let errorMessage = error.message;
+        // The email of the user's account used.
+        let email = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        let credential = error.credential;
+        console.log(error);
     });
-    GameController.app = app;
-
-    // TODO Firebase Authでユーザ名を置き換える
-    let dt = new Date();
-    let userName = "user" + dt.getMinutes();
-    Debugger.setValue("userName", userName);
-    let myPlayer = PlayerController.getMyPlayer();
-    myPlayer.id = userName;
-    Firestore.initialize(userName);
-    Firestore.watchMap();
-    Firestore.watchPlayer();
-
-    app.enableStats();
-    app.run();
 });
