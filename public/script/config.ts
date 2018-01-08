@@ -1,6 +1,12 @@
 namespace MetalTile {
+    export class Chip {
+        id : number;
+        hitPoint : number;
+        isWalk : boolean;
+    }
+
     export class GameConfig {
-        
+
         public static get SCREEN_WIDTH():number {
             return 32 * 48;
         }
@@ -29,6 +35,34 @@ namespace MetalTile {
                     "chip001" : "/image/mapchip/grassland.png"
                 },
             };
+        }
+
+        public static getChip(id : number) : Chip {
+           let map = new Map<number, Chip>();
+
+           // 地面
+           map.set(0, {
+               id : 0,
+               hitPoint : 1000,
+               isWalk : false,
+            });
+
+           // 草
+            map.set(1, {
+                id : 1,
+                hitPoint : 1000,
+                isWalk : true,
+            });
+
+           let v = map.get(id);
+           if (v) {
+               return v;
+           }
+           return {
+               id : 0,
+               hitPoint : 0,
+               isWalk : false,
+           };
         }
     }
 }

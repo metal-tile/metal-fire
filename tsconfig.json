@@ -22,6 +22,7 @@
     "public/script/other-player-sprite.ts",
     "public/script/player.ts",
     "public/script/player-controller.ts",
+    "public/script/player-logic.ts",
     "public/script/player-sprite.ts"
   ]
 }
