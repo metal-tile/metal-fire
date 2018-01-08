@@ -28,6 +28,10 @@ namespace MetalTile {
             }
         }
 
+        public static getChip(landName : string, row : number, col : number) : any {
+            return this.landMap.get(landName)[row][col];
+        }
+
         public static getLand(landName : string):any {
             if (!this.landMap.get(landName)) {
                 return new Array();

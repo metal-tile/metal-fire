@@ -34,6 +34,11 @@ phina.define('MapSprite', {
                     continue;
                 }
 
+                if (!land[row][col]) {
+                    console.log("chip not found: row=" + row + ", col=" + col);
+                    continue;
+                }
+
                 let assetName = "chip" + ("000" + land[row][col].chip).substr(-3);
                 let element = phina.asset.AssetManager.get("image", assetName).domElement;
 
