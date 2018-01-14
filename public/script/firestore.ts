@@ -80,14 +80,24 @@ namespace MetalTile {
         }
 
         public static watchMonster() {
-            // FIXME Firestore上のMonsterは未実装なので、固定で1体のモンスターを表示
-            let monster = new Monster();
-            monster.id = "sample";
-            monster.x = 880;
-            monster.y = 880;
-            monster.angle = 180;
-            monster.isMove = false;
-            MonsterController.setMonster(monster);
+            this.db.collection("world-default-land-home-monster-position")
+                .onSnapshot(function(snapshot) {
+                    snapshot.docChanges.forEach(function(change) {
+                        if (change.doc.metadata.hasPendingWrites) {
+                            //noop
+                            return;
+                        }
+                        let monster = new Monster();
+                        monster.id = change.doc.id;
+                        monster.x = change.doc.data().x;
+                        monster.y = change.doc.data().y;
+                        monster.angle = change.doc.data().angle;
+                        monster.isMove = change.doc.data().isMove;
+                        MonsterController.setMonster(monster);
+
+                        // Debugger.setValue(change.doc.id, change.doc.data().x + ":" + change.doc.data().y);
+                    });
+                });
         }
 
         public static watchMap() {

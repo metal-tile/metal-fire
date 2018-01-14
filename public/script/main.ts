@@ -76,6 +76,7 @@ phina.main(function () {
 
                 Firestore.watchMap();
                 Firestore.watchPlayer();
+                Firestore.watchMonster();
 
                 app.enableStats();
                 app.run();
