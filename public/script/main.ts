@@ -16,6 +16,7 @@ declare let Sprite: any;
 declare let MapSprite: any;
 declare let PlayerSprite: any;
 declare let OtherPlayerSprite: any;
+declare let MonsterSprite: any;
 declare let OtherPlayerNameLabelSprite: any;
 declare let DebuggerLabel: any;
 
@@ -75,6 +76,7 @@ phina.main(function () {
 
                 Firestore.watchMap();
                 Firestore.watchPlayer();
+                Firestore.watchMonster();
 
                 app.enableStats();
                 app.run();

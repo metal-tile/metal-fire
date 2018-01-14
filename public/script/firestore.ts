@@ -79,6 +79,27 @@ namespace MetalTile {
                 });
         }
 
+        public static watchMonster() {
+            this.db.collection("world-default-land-home-monster-position")
+                .onSnapshot(function(snapshot) {
+                    snapshot.docChanges.forEach(function(change) {
+                        if (change.doc.metadata.hasPendingWrites) {
+                            //noop
+                            return;
+                        }
+                        let monster = new Monster();
+                        monster.id = change.doc.id;
+                        monster.x = change.doc.data().x;
+                        monster.y = change.doc.data().y;
+                        monster.angle = change.doc.data().angle;
+                        monster.isMove = change.doc.data().isMove;
+                        MonsterController.setMonster(monster);
+
+                        // Debugger.setValue(change.doc.id, change.doc.data().x + ":" + change.doc.data().y);
+                    });
+                });
+        }
+
         public static watchMap() {
             let landName = "world-default20170908-land-home";
             this.db.collection(landName)

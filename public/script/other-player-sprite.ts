@@ -1,7 +1,6 @@
 /// <reference path="config.ts" />
 /// <reference path="debugger.ts" />
 
-import GameConfig = MetalTile.GameConfig;
 phina.define('OtherPlayerSprite', {
     superClass: 'Sprite',
     init: function (player : Player, asset : string) {
