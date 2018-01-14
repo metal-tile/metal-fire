@@ -49,6 +49,10 @@ phina.define('PlayerSprite', {
             Firestore.updateLandTile(aheadRowCol.row, aheadRowCol.col, 1);
         }
 
+        if (keyboard.getKey('m')) {
+            Firestore.watchMonster();
+        }
+
         if (Debugger.isShow) {
             let pp = this.player.getPosition();
             Debugger.setValue("Player X", pp.x);

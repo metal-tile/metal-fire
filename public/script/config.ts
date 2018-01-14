@@ -31,6 +31,7 @@ namespace MetalTile {
             return {
                 image : {
                     "player" : "/image/character/sara.png",
+                    "orc_fighter" : "/image/monster/orc_fighter.png",
                     "chip000" : "/image/mapchip/ground.png",
                     "chip001" : "/image/mapchip/grassland.png"
                 },
@@ -66,4 +67,4 @@ namespace MetalTile {
         }
     }
 }
-
+import GameConfig = MetalTile.GameConfig;

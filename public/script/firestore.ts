@@ -79,6 +79,17 @@ namespace MetalTile {
                 });
         }
 
+        public static watchMonster() {
+            // FIXME Firestore上のMonsterは未実装なので、固定で1体のモンスターを表示
+            let monster = new Monster();
+            monster.id = "sample";
+            monster.x = 880;
+            monster.y = 880;
+            monster.angle = 180;
+            monster.isMove = false;
+            MonsterController.setMonster(monster);
+        }
+
         public static watchMap() {
             let landName = "world-default20170908-land-home";
             this.db.collection(landName)
