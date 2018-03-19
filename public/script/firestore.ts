@@ -22,14 +22,13 @@ namespace MetalTile {
             this.initializeApp = true;
         }
 
-        public static getUserName() : any {
+        public static getUserRef() : any {
             return this.db.collection("users").doc(this.user.uid).get();
         }
 
         public static updatePlayerPosition(x : number, y : number, angle : number, isMove : boolean) {
-            // FIXME userNameにするかuser.uidにするか？
-            // ルールを考えると、uidにして、userNameはプロパティにするのが無難か？
-            this.db.collection("world-default-player-position").doc(this.userName).set({
+            this.db.collection("world-default-player-position").doc(this.user.uid).set({
+                name : this.userName,
                 x : x,
                 y : y,
                 angle : angle,
@@ -68,6 +67,7 @@ namespace MetalTile {
                         }
                         let player = new Player();
                         player.id = change.doc.id;
+                        player.name = change.doc.data().name;
                         player.x = change.doc.data().x;
                         player.y = change.doc.data().y;
                         player.angle = change.doc.data().angle;

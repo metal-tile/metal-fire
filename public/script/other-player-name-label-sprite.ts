@@ -1,7 +1,7 @@
 phina.define('OtherPlayerNameLabelSprite', {
     superClass: 'Label',
     init: function(player : Player) {
-        this.superInit({text : player.id, fontSize : 18});
+        this.superInit({text : player.name, fontSize : 18});
         this.setPosition(player.x, player.y - this.labelYPosition);
         this.align = "center";
         this.player = player;
