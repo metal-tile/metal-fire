@@ -66,13 +66,13 @@ phina.main(function () {
             return;
         }
 
-        let ref = Firestore.getUserName();
+        let ref = Firestore.getUserRef();
         ref.then(function(doc) {
             if (doc.exists) {
                 Firestore.userName = doc.data().name;
                 Debugger.setValue("userName", Firestore.userName);
                 let myPlayer = PlayerController.getMyPlayer();
-                myPlayer.id = Firestore.userName;
+                myPlayer.id = Firestore.user.id;
 
                 Firestore.watchMap();
                 Firestore.watchPlayer();
