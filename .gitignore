@@ -21,3 +21,7 @@ public/script/*.js
 .idea/
 
 *.js.map
+
+node_modules/*
+package-lock.json
+.firebaserc

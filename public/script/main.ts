@@ -78,6 +78,8 @@ phina.main(function () {
                 Firestore.watchPlayer();
                 Firestore.watchMonster();
 
+                Firestore.queryChip1();
+
                 app.enableStats();
                 app.run();
             } else {
