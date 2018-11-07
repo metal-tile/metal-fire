@@ -1,6 +1,7 @@
 /// <reference path="firestore.ts" />
 /// <reference path="config.ts" />
 /// <reference path="debugger.ts" />
+/// <reference path="debugger-move-point.ts" />
 /// <reference path="player-logic.ts" />
 
 import Player = MetalTile.Player;
@@ -16,8 +17,9 @@ phina.define('PlayerSprite', {
         this.player = player;
 
         this.setPosition((MetalTile.GameConfig.SCREEN_WIDTH / 2) - (32 / 2), (MetalTile.GameConfig.SCREEN_HEIGHT / 2) - (48 / 2));
-        this.origin.set(0, 0); // 左上基準に変更
+        // this.origin.set(0, 0); // 左上基準に変更
         this.frameIndex = 0;
+        this.collider.show();
     },
 
     update: function (app) {
@@ -68,46 +70,64 @@ phina.define('PlayerSprite', {
         let speed = 4;
         let position = this.player.getPosition();
 
+        let checkPositions: Array<any> = [];
         let aheadX = 0;
         let aheadY = 0;
-        const foot = 10; // 足元を見る調整値 MetalTile.Player.getAheadPosition() と同じ調整値
+        const targetX = 8; // 進もうとする場所をチェックする点の調整値
+        const targetY = 14; // 進もうとする場所をチェックする点の調整値
+        const foot = 6; // 足元を見る調整値 MetalTile.Player.getAheadPosition()よりは短い位置を確認する
         if (moveAngle == "w") {
             aheadY -= speed;
+            aheadY -= 6;
+            checkPositions.push({x:position.x + aheadX + targetX, y: position.y + aheadY});
+            checkPositions.push({x:position.x + aheadX - targetX, y: position.y + aheadY});
         } else if (moveAngle == "s") {
             aheadY += speed;
             aheadY += 20;
+            checkPositions.push({x:position.x + aheadX + targetX, y: position.y + aheadY});
+            checkPositions.push({x:position.x + aheadX - targetX, y: position.y + aheadY});
         } else if (moveAngle == "a") {
             aheadX -= speed;
-            aheadX -= 16;
+            aheadX -= 15;
             aheadY += foot;
+            checkPositions.push({x:position.x + aheadX, y: position.y + aheadY + targetY});
+            checkPositions.push({x:position.x + aheadX, y: position.y + aheadY});
         } else if (moveAngle == "d") {
             aheadX += speed;
-            aheadX += 8;
+            aheadX += 15;
             aheadY += foot;
+            checkPositions.push({x:position.x + aheadX, y: position.y + aheadY + targetY});
+            checkPositions.push({x:position.x + aheadX, y: position.y + aheadY});
         }
 
-        let aheadRowCol = LandContoller.getRowCol(position.x + aheadX, position.y + aheadY);
-        Debugger.setValue("AheadRowCol", aheadRowCol.row + ":" + aheadRowCol.col);
-        Debugger.setValue("AheadChip", LandContoller.getChip("world-default20170908-land-home", aheadRowCol.row, aheadRowCol.col).chip)
-        if (aheadRowCol.col > 60) {
-            return;
+        { // Debugのためのロジック
+            let aheadRowCol = LandContoller.getRowCol(position.x + aheadX, position.y + aheadY);
+            Debugger.setValue("AheadPosition", (position.y + aheadY) + ":" + (position.x + aheadX));
+            Debugger.setValue("AheadRowCol", aheadRowCol.row + ":" + aheadRowCol.col);
+            Debugger.setValue("AheadChip", LandContoller.getChip("world-default20170908-land-home", aheadRowCol.row, aheadRowCol.col).chip);
+            DebuggerMovePoint.setPoint(aheadX, aheadY);
+            DebuggerMovePoint.setIsWalk(true);
         }
 
-        let chip = GameConfig.getChip(LandContoller.getChip("world-default20170908-land-home", aheadRowCol.row, aheadRowCol.col).chip);
-        if (chip.isWalk == false) {
-            // TODO 切りの良い位置まで移動する感じにする
-            // 32の倍数の位置まで移動すればいい・・・？もしくは、最後に半分に割るのか？
-            let movePosition = PlayerLogic.movePosition(moveAngle, position, chip);
-            if (moveAngle == "w") {
-                speed = movePosition - position.y;
-            } else if (moveAngle == "s") {
-                speed = position.y - movePosition;
-            } else if (moveAngle == "a") {
-                speed = movePosition - position.x;
-            } else if (moveAngle == "d") {
-                speed = position.x - movePosition;
+        checkPositions.forEach(function(value) {
+            let rowCol:any = LandContoller.getRowCol(value.x, value.y);
+            let chip:any = GameConfig.getChip(LandContoller.getChip("world-default20170908-land-home", rowCol.row, rowCol.col).chip);
+            if (chip.isWalk === false) {
+                DebuggerMovePoint.setIsWalk(false);
+                // TODO 切りの良い位置まで移動する感じにする
+                // 32の倍数の位置まで移動すればいい・・・？もしくは、最後に半分に割るのか？
+                let movePosition = PlayerLogic.movePosition(moveAngle, position, chip);
+                if (moveAngle == "w") {
+                    speed = Math.min(speed, (movePosition - position.y));
+                } else if (moveAngle == "s") {
+                    speed = Math.min(speed, (position.y - movePosition));
+                } else if (moveAngle == "a") {
+                    speed = Math.min(speed, (movePosition - position.x));
+                } else if (moveAngle == "d") {
+                    speed = Math.min(speed, (position.x - movePosition));
+                }
             }
-        }
+        });
 
         if (moveAngle == "w") {
             this.player.moveUp(speed);

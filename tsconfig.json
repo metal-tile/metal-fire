@@ -13,6 +13,8 @@
     "public/script/config.ts",
     "public/script/debugger.ts",
     "public/script/debugger-label.ts",
+    "public/script/debugger-move-point.ts",
+    "public/script/debugger-move-point-rectangle.ts",
     "public/script/firestore.ts",
     "public/script/game-controller.ts",
     "public/script/land.ts",

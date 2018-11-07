@@ -4,6 +4,7 @@
 
 import LandContoller = MetalTile.LandContoller;
 import Debugger = MetalTile.Debugger;
+import DebuggerMovePoint = MetalTile.DebuggerMovePoint;
 
 namespace MetalTile {
     export class PlayerLogic {

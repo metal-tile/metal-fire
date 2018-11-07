@@ -12,7 +12,8 @@ namespace MetalTile {
             if (this.playerMap.has(player.id) == false) {
                 console.log("new player " + player.id + ":" + player.x + ":" + player.y);
                 this.playerMap.set(player.id, player);
-                GameController.currentScene.addChild(OtherPlayerSprite(player, "player"));
+                let ops = OtherPlayerSprite(player, "player");
+                GameController.currentScene.addChild(ops);
                 GameController.currentScene.addChild(OtherPlayerNameLabelSprite(player));
             }
             let p = this.playerMap.get(player.id);

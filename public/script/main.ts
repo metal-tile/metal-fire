@@ -5,6 +5,7 @@
 /// <reference path="other-player-sprite.ts" />
 /// <reference path="firestore.ts" />
 /// <reference path="debugger.ts" />
+/// <reference path="debugger-move-point.ts" />
 
 import GameController = MetalTile.GameController;
 
@@ -19,6 +20,7 @@ declare let OtherPlayerSprite: any;
 declare let MonsterSprite: any;
 declare let OtherPlayerNameLabelSprite: any;
 declare let DebuggerLabel: any;
+declare let DebuggerMovePointRectangle: any;
 
 // MainScene クラスを定義
 phina.define('MainScene', {
@@ -35,6 +37,9 @@ phina.define('MainScene', {
 
         PlayerSprite(PlayerController.getMyPlayer(), "player").addChildTo(this);
         DebuggerLabel().addChildTo(this);
+        MetalTile.DebuggerMovePoint.initialize();
+        DebuggerMovePointRectangle().addChildTo(this);
+
         // FIXME とりあえず適当に初期ポジションを入れておく
         PlayerController.getMyPlayer().updatePosition(1000, 1000);
 

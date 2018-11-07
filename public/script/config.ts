@@ -33,37 +33,45 @@ namespace MetalTile {
                     "player" : "/image/character/sara.png",
                     "orc_fighter" : "/image/monster/orc_fighter.png",
                     "chip000" : "/image/mapchip/ground.png",
-                    "chip001" : "/image/mapchip/grassland.png"
+                    "chip001" : "/image/mapchip/grassland.png",
+                    "chip999" : "/image/mapchip/debug.png",
                 },
             };
         }
 
         public static getChip(id : number) : Chip {
-           let map = new Map<number, Chip>();
+            let map = new Map<number, Chip>();
 
-           // 地面
-           map.set(0, {
-               id : 0,
-               hitPoint : 1000,
-               isWalk : false,
+            // 地面
+            map.set(0, {
+                id : 0,
+                hitPoint : 1000,
+                isWalk : false,
             });
 
-           // 草
+            // 草
             map.set(1, {
                 id : 1,
                 hitPoint : 1000,
                 isWalk : true,
             });
 
-           let v = map.get(id);
-           if (v) {
-               return v;
-           }
-           return {
-               id : 0,
-               hitPoint : 0,
-               isWalk : false,
-           };
+            // debug
+            map.set(999, {
+                id : 999,
+                hitPoint : 1000,
+                isWalk : true,
+            });
+
+            let v = map.get(id);
+            if (v) {
+                return v;
+            }
+            return {
+                id : 0,
+                hitPoint : 0,
+                isWalk : false,
+            };
         }
     }
 }
