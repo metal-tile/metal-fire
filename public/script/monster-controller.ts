@@ -6,7 +6,8 @@ namespace MetalTile {
         public static setMonster(monster : Monster) {
             if (this.monsterMap.has(monster.id) == false) {
                 this.monsterMap.set(monster.id, monster);
-                MetalTile.GameController.currentScene.addChild(MonsterSprite(monster, "orc_fighter", 32, 48));
+                monster.sprite = MonsterSprite(monster, "orc_fighter", 32, 48);
+                MetalTile.GameController.currentScene.addChild(monster.sprite);
             }
             let p = this.monsterMap.get(monster.id);
             if (p) {

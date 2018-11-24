@@ -14,6 +14,7 @@ namespace MetalTile {
         readonly animetionFrameSize = 3; // TODO モンスターはいろいろいるかも？
         public x : number;
         public y : number;
+        public sprite : any;
 
         public updatePosition(x : number, y : number) {
             this.x = x;

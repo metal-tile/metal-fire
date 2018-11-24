@@ -3,11 +3,14 @@
 /// <reference path="debugger.ts" />
 /// <reference path="debugger-move-point.ts" />
 /// <reference path="player-logic.ts" />
+/// <reference path="monster-controller.ts" />
 
 import Player = MetalTile.Player;
 import Firestore = MetalTile.Firestore;
 import PlayerController = MetalTile.PlayerController;
 import PlayerLogic = MetalTile.PlayerLogic;
+import MonsterController = MetalTile.MonsterController;
+import Monster = MetalTile.Monster;
 
 phina.define('PlayerSprite', {
     superClass: 'Sprite',
@@ -17,8 +20,8 @@ phina.define('PlayerSprite', {
         this.player = player;
 
         this.setPosition((MetalTile.GameConfig.SCREEN_WIDTH / 2) - (32 / 2), (MetalTile.GameConfig.SCREEN_HEIGHT / 2) - (48 / 2));
-        // this.origin.set(0, 0); // 左上基準に変更
         this.frameIndex = 0;
+        this.collider.setSize(GameConfig.CHRACTER_WIDTH - 4, GameConfig.CHRACTER_HEIGHT - 4); // 実際のサイズより当たり判定を小さめにする
         this.collider.show();
     },
 
@@ -65,6 +68,14 @@ phina.define('PlayerSprite', {
             }
             Firestore.updatePlayerPosition(this.player.x, this.player.y, this.player.angle, isMove);
         }
+
+        // Monsterとの当たり判定
+        MonsterController.monsterMap.forEach((value: Monster, key: String, map:Map<String, Monster>) => {
+            if (this.collider.hitTest(value.sprite.collider)) {
+                console.log("hit!!!")
+            }
+        });
+
     },
     movePosition: function(moveAngle : string) {
         let speed = 4;
