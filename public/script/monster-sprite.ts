@@ -8,8 +8,9 @@ phina.define("MonsterSprite", {
 
         this.monster = monster;
 
-        this.origin.set(0, 0); // 左上基準に設定
         this.frameIndex = 0;
+        this.collider.setSize(width - 4, height - 4); // 実際のサイズより当たり判定を小さめにする
+        this.collider.show();
     },
 
     update: function (app) {

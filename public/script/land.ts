@@ -19,8 +19,8 @@ namespace MetalTile {
         }
 
         public static getRowCol(x : number, y : number) {
-            let centerRow = Math.floor(y / MetalTile.GameConfig.CHIP_SIZE);
-            let centerCol = Math.floor(x / MetalTile.GameConfig.CHIP_SIZE);
+            let centerRow = Math.floor((y - MetalTile.GameConfig.CHRACTER_HEIGHT / 2) / MetalTile.GameConfig.CHIP_SIZE);
+            let centerCol = Math.floor((x - MetalTile.GameConfig.CHRACTER_WIDTH / 2) / MetalTile.GameConfig.CHIP_SIZE);
 
             return {
                 row : centerRow,
