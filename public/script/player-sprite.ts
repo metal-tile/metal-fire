@@ -8,6 +8,7 @@
 import Player = MetalTile.Player;
 import Firestore = MetalTile.Firestore;
 import PlayerController = MetalTile.PlayerController;
+import PickelController = MetalTile.PickelController;
 import PlayerLogic = MetalTile.PlayerLogic;
 import MonsterController = MetalTile.MonsterController;
 import Monster = MetalTile.Monster;
@@ -26,8 +27,16 @@ phina.define('PlayerSprite', {
     },
 
     update: function (app) {
+        let me = PlayerController.getMyPlayer();
+        let mouse = app.mouse;
         let keyboard = app.keyboard;
         let isMove : boolean = false;
+
+        if (mouse.getButtonDown("left")) {
+            if (!PickelController.activePickelMap.has(me.id)) {
+                PickelController.startPickel(me.id, (MetalTile.GameConfig.SCREEN_WIDTH / 2) - (32 / 2), (MetalTile.GameConfig.SCREEN_HEIGHT / 2) - (48 / 2), me.angle);
+            }
+        }
 
         if (keyboard.getKey("w")) {
             this.movePosition("w");

@@ -16,6 +16,7 @@ declare let GameApp: any;
 declare let Sprite: any;
 declare let MapSprite: any;
 declare let PlayerSprite: any;
+declare let PickelSprite: any;
 declare let OtherPlayerSprite: any;
 declare let MonsterSprite: any;
 declare let OtherPlayerNameLabelSprite: any;

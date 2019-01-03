@@ -22,6 +22,8 @@
     "public/script/map.ts",
     "public/script/other-player-name-label-sprite.ts",
     "public/script/other-player-sprite.ts",
+    "public/script/pickel-controller.ts",
+    "public/script/pickel-sprite.ts",
     "public/script/player.ts",
     "public/script/player-controller.ts",
     "public/script/player-logic.ts",

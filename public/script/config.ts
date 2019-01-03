@@ -35,6 +35,7 @@ namespace MetalTile {
                     "chip000" : "/image/mapchip/ground.png",
                     "chip001" : "/image/mapchip/grassland.png",
                     "chip999" : "/image/mapchip/debug.png",
+                    "pickel" : "/image/tool/pickel.png",
                 },
             };
         }
