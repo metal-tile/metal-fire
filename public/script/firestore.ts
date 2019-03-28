@@ -12,9 +12,9 @@ namespace MetalTile {
             }
 
             firebase.initializeApp({
-                apiKey: 'AIzaSyBpU_0jiRRwU_cORczIBeMPmOiZtUhct4w',
-                authDomain: 'metal-tile-dev1.firebaseapp.com',
-                projectId: 'metal-tile-dev1'
+                apiKey: 'AIzaSyAh4jRhywSvG_IqkRrS8SPZSAtBP9Ez1y0',
+                authDomain: 'metal-tile-dev2.firebaseapp.com',
+                projectId: 'metal-tile-dev2'
             });
 
             // Initialize Cloud Firestore through firebase
@@ -23,7 +23,7 @@ namespace MetalTile {
         }
 
         public static getUserRef() : any {
-            return this.db.collection("users").doc(this.user.uid).get();
+            return this.db.collection("world-default-users").doc(this.user.uid).get();
         }
 
         public static updatePlayerPosition(x : number, y : number, angle : number, isMove : boolean) {
@@ -112,7 +112,7 @@ namespace MetalTile {
                             keyNamePosition = 1;
                         } else {
                             // Server
-                            //["projects","metal-tile-dev1","databases","(default)","documents","world-default20170908-land-home","row-049-col-024"] が入っている
+                            //["projects","metal-tile-dev2","databases","(default)","documents","world-default20170908-land-home","row-049-col-024"] が入っている
                             keyNamePosition = 6;
                         }
                         let sl = change.doc.et.key.path.segments[keyNamePosition].split("-");

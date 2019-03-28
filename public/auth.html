@@ -18,9 +18,9 @@
         let app = {};
 
         firebase.initializeApp({
-            apiKey: 'AIzaSyBpU_0jiRRwU_cORczIBeMPmOiZtUhct4w',
-            authDomain: 'metal-tile-dev1.firebaseapp.com',
-            projectId: 'metal-tile-dev1'
+            apiKey: 'AIzaSyAh4jRhywSvG_IqkRrS8SPZSAtBP9Ez1y0',
+            authDomain: 'metal-tile-dev2.firebaseapp.com',
+            projectId: 'metal-tile-dev2'
         });
 
         var provider = new firebase.auth.GoogleAuthProvider();
@@ -32,7 +32,7 @@
             app.user = user;
             console.log(user);
 
-            firebase.firestore().collection("users").doc(user.uid).get()
+            firebase.firestore().collection("world-default-users").doc(user.uid).get()
                 .then(function(doc) {
                     if (doc.data().name) {
                         document.getElementById("user-name").value = doc.data().name;
@@ -72,7 +72,7 @@
             }
 
             try {
-                await firebase.firestore().collection("users").doc(app.user.uid).set({
+                await firebase.firestore().collection("world-default-users").doc(app.user.uid).set({
                     name : name,
                 });
                 location.href="/";
